@@ -1,0 +1,239 @@
+# 190528 유용한 API
+
+
+
+## java.lang.object
+
+- 객체.clone() - 객체복제
+  - 얕은 복사: 객체의 생성된 주소값을 할당하는 방식 유사(동일한 객체를 참조)
+  - 깊은 복사: 객체의 모든 속성을 새로 생성해서 메모리에 새로운 동일한 객체를 생성함
+
+사용자 정의 클래스를 복제가능하도록 하려면 Cloneable 인터페이스 구현
+
+- Object의 equals() method - 객체가 생성된 주소의 hash값을 비교
+
+  - hashCode()를 사용해서 객체 생성 주소의 hash값 리턴
+
+- getClass() method : 가령 Object obj = new Double(); 에서 실제 생성된 객체의 타입을 리턴받기 위해 getClass() 사용 
+
+- toString() - 클래스 FullName@hash값
+
+- notify() , notifyAll(), wait()- 일반 메서드에서는  호출 불가 synchronized가 선언된 메서드에서 호출 가능
+
+   =>멀티 스레드 환경에서 자원을 균등하게 사용하기 위해서 사용!
+
+
+
+
+
+## java.lang.String: 문자열 표현, 불변 객체
+
+```java
+//Excercise1
+String s = new String(new byte[] {65, 66, 67});
+System.out.println(s); //System.out.println(s.toString());과 동일, ABC로 출력
+
+//Excercise2
+String s2 = "java";
+byte[] bytes = s2.getBytes();
+s2.charAt(0);
+s2.substring(1, 3);
+String newString = s.concat(s2); // s객체 출력하면 "ABC"
+
+//Excercise3
+String s3 = "JackAndJue";
+s3.replace("J", "Bl"); // s3객체 출력하면 "JackAndJue" 그대로! But!
+String s4 = s3.replace("J", "Bl"); // s4 출력하면 "BlackAndBlue"
+
+s3 = "   Jack  Jue   "; //앞 뒤 공백 3개씩, 중앙 공백 2개
+se.trim().length(); // trim()은 양옆 공백을 제거해주는 메서드. 결과 9!
+```
+
+- Strings의 equals( )메서드: ( )에 비교할 문자열 객체를 넣어서 문자열의 내용을 비교
+
+- equalsIgnoreCase() : equals() 메서드가 대소문자를 구분하여 비교한다면 얘는 구분 안하고 비교
+- OOO.length(): 문자열의 길이를 리턴
+
+- String.valueOf() 또는 OO : Primitive Data Type을 문자열로 변환
+- split( ) : ( )에 구분자 또는 정규표현식을 넣고, 문자열을 구분자로 쪼개어 문자열 배열로 리턴.
+- join( ) : ( )에 결합문자 또는 문자열 배열을 넣고, 문자열 배열의 요소를 하나씩 결합문자를 사용해서 하나의 결합된 문자로 리턴!(데이터 처리시 아주 유용하게 사용)
+
+
+
+
+
+## StringBuffer : 가변문자열
+
+```java
+StringBuffer sb1 = new StringBuffer("java");
+StringBuffer sb2 = new StringBuffer("java");
+System.out.println(sb1.equals(sb2)); //false!
+sb1.append("& sql"); // sb1의 출력내용은 "java& sql"
+sb1.insert(4, " web "); // 
+```
+
+- remove( )
+- length( )
+- substring( )
+
+
+
+
+
+## java.lang.Math: 수학계산에 유용한 메서드
+
+
+
+**생성자가 private 이므로 new Math() (객체생성) 불가**
+
+**모든 속성과 메서드는 객체생성 없이 사용할 수 있는 static이다!**
+
+- abs( ) : 절대값
+
+- max( ) : 최대값
+
+- min( ) : 최소값
+
+- log( ) : 로그값
+
+- power( ) : 
+
+- sqrt( ) : 루트값
+
+- round( ) : 반올림
+
+- ceil( ) : 가장 가까운 큰 정수
+
+- floor( ) :  가장 가까운 작은 정수
+
+  ....
+
+
+
+
+
+## Wrapper Class & Primitive DataType
+
+모두 객체로 구현해야 할 경우, primitive dataType을 객체로 wrapping할 때/ 반대로 Wrapper Class에서 Primitive DataType을 뽑아낼 때!
+
+- boolean => Boolean => booleanValue( ) 
+  -  Boolean.parseBoolean: 문자열을 primitiveDataType으로 바꿀 때! 
+
+- byte => Byte => byteValue( )
+  - Byte.parseByte: 문자열을 primitiveDataType으로 바꿀 때
+
+- short => Short =>  shortValue( )
+  - Short.parseShort: 문자열을 primitiveDataType으로 바꿀 때!
+
+- char => Character => charValue( )
+  - Character.parseChar: 문자열을 primitiveDataType으로 바꿀 때! 
+
+- int => Integer => intValue( )
+  - Integer.parseInt: 문자열을 primitiveDataType으로 바꿀 때!
+
+- long => Long => longValue( )
+  - Long.parseLong: 문자열을 primitiveDataType으로 바꿀 때!
+
+- float => Float => floatValue( )
+  - Float.parseFloat: 문자열을 primitiveDataType으로 바꿀 때!
+
+- double => Double => doubleValue( )
+  - Double.parseDouble: 문자열을 primitiveDataType으로 바꿀 때!
+
+
+
+
+
+## java.util.objects
+
+java.util.objects: 객체가 null인지 null이 아닌지 체크하려면 사용하는 클래스
+
+
+
+
+
+## System.currentTimeMillis();
+
+시스템의 현재 시간을 utc 기준 milli second로 리턴하는 메서드
+
+프로그램이 실행되는 데 걸리는 시간을 체크할 때 사용! 로직 맨 처음이랑 끝에 적어서 그 시간의 차이를 빼줌으로써 구할 수 있는 것!
+
+
+
+난수 생성:  Math.random()
+
+​					Random r = new Random()
+
+```java
+(int)(Math.random()*100+1) 
+Random r = new Random()
+r.nextInt(100)+1
+
+Random r = new Random() // 매번 실행할 때마다 동일한 난수 생성하게 하려면 ( )에 Seed값을 부여한다.
+```
+
+
+
+
+
+## 정규표현식
+
+**정규표현식을 이용해서 데이터를 처리해야 할 경우, 특정 패턴을 객체로 생성**
+
+1. java.util.regex.Pattern 클래스의 compile("패턴") => Pattern 인스턴스 생성
+2. Matcher m = Pattern 인스턴스.matcher("처리할 대상 데이터") => Matcher인스턴스 생성
+3. m.matches() => true or false로 리턴
+
+- .  하나의 모든 문자
+
+- [a-Z or A-Z or 0-9] 문자의 범위
+
+- OO$ : OO로 끝나야 한다
+- ^OO : OO로 시작해야 한다.
+- [^0-9] : 숫자로 시작하면 안된다.
+- [0-9]? : zero or one
+
+- [0-9]+ : one or more
+- [0-9]* : zero or more
+- {2, 5} : 최소횟수, 최대횟수
+- {3}
+- \\\d, \\\D, \\\w, \\\W, \\\s, \\\S
+
+
+
+
+
+## 표준출력
+
+- 1.5버젼 이전에 한글을 포함한 키보드 입력을 받으려면!
+
+  java.io.inputStream: 바이트 최상위 스트림(추상클래스)
+
+   System.in:  운영체제에 맞게 InputStream을 구현한 객체 (키보드 입력에 해당)
+
+  문자 스트림은 OOOOReader, OOOWriter로 시작하거나 끝남
+
+```java
+try {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String s = br.readLine();
+    //Integer.parseInt(s)
+} catch(IOException e) {
+} finally {
+    br.close(); // 작업이 끝나면 close를 해줘야 함!
+} catch (IOException e) {  
+}
+```
+
+- Scanner scanner = new Scanner(System.in)
+
+  scanner.next(): 문자열로
+
+  scanner.nextLine()
+
+  scanner.nextInt() : 문자열을 정수로 변환
+
+  ...........
+
+- 1.6버젼에서는 System.console()
+
