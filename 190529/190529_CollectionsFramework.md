@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 190528 Chapter 11
 
 
@@ -139,26 +138,29 @@ size: 0
     list1: [5, 4, 2, 0, 1, 3]
   list2: [4, 2, 0]  (list1의 1,2,3번)
     
+    ```
+  
   list1: [0, 1, 2, 3, 4, 5]
     list2: [0, 2, 4]  (Collections.sort로 정렬)
-    
+  
     list1.containsAll(list2):true
     list1: [0, 1, 2, 3, 4, 5]
     list2: [0, 2, 4, A, B, C]   
-    
+  
     list1.retainAll(list2): true
     list1: [0, 2, 4]
     list2: [0, 2, 4, A, B, C]  (list1에서 list2와 겹치는 부분 제외 제거)
-    
+  
     list1: [0, 2, 4]
     list2: [A, B, C]  (list2에서 list1과 공통된 객체 제거)
-    
+  
     */
     ```
   
     
   
   - **LinkedList**: 배열은 크기를 변경할 수 없고 비순차적인 데이터의 추가 또는 삭제에 시간이 많이 걸린다는 단점을 가지는데 이러한 배열의 단점을 보완해 고안된 클래스. but 순차적인 접근에 대해서는 ArrayList보다 느리다!
+    ```
 
 
 
@@ -415,26 +417,29 @@ size: 0
     list1: [5, 4, 2, 0, 1, 3]
   list2: [4, 2, 0]  (list1의 1,2,3번)
     
+    ```
+  
   list1: [0, 1, 2, 3, 4, 5]
     list2: [0, 2, 4]  (Collections.sort로 정렬)
-    
+  
     list1.containsAll(list2):true
     list1: [0, 1, 2, 3, 4, 5]
     list2: [0, 2, 4, A, B, C]   
-    
+  
     list1.retainAll(list2): true
     list1: [0, 2, 4]
     list2: [0, 2, 4, A, B, C]  (list1에서 list2와 겹치는 부분 제외 제거)
-    
+  
     list1: [0, 2, 4]
     list2: [A, B, C]  (list2에서 list1과 공통된 객체 제거)
-    
+  
     */
     ```
   
     
   
   - **LinkedList**: 배열은 크기를 변경할 수 없고 비순차적인 데이터의 추가 또는 삭제에 시간이 많이 걸린다는 단점을 가지는데 이러한 배열의 단점을 보완해 고안된 클래스. but 순차적인 접근에 대해서는 ArrayList보다 느리다!
+    ```
 
 
 
