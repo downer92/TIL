@@ -1,0 +1,601 @@
+# 190926 R Statistics
+
+## I. 워크샵
+
+### 1. 이용자 탈퇴 이유 분석
+
+개요
+
+퍼즐컬렉션 서비스를 시작한지 1년 3개월이 지났습니다. 서비스 직후에는 사전 등록자를 중심으로 유저수가 크게 증가하였고, 몇 주 후에는 심각한 버그 때문에 유저가 탈퇴하다가, 1년 후에는 광고 효과로 다시 유저수가 증가하였고, 그 후에는 그 광고를 보고 가입 했던 유저드리 조금씩 떠나는 등 유저수가 단기적으로는 오르락 내리락하면서 월 단위로 반년 정도 계속해서 상승하였습니다. 그 후 8개월동안 유저수가 정점을 찍은 상태로 유지되었습니다. 이달 들어 퍼즐컬렉션 유저수가 크게 줄어들었고, 회사를 대표하는 히트 게임이었던 만큼 경영진을 중심으로 유저수의 감소를 큰 문제로 인식하고 있습니다. 원인을 밝혀서 대책을 세우기 위해 분석 담당자에게 의뢰했습니다.
+
+
+
+#### 1) 가설
+
+- 광고에 문제가 있어서 신규 유저수보다 탈퇴 유저수가 더 많았다
+
+- 매월 테마를 바꿔서 개최하던 게임 이벤트가 식상해져서 그만둔 유저가 많았다
+
+- 성별 혹은 연령 등 특정 유저 층에서 탈퇴한 유저가 많았다
+
+
+
+#### 2) 마케팅 부서와 게임 개발 부서에 질의 응답을 한 결과
+
+- 광고는 지난달과 비교해서 거의 같은 수준이었으며 신규 유저수도 거의 같은 수준이었다. 
+
+- 이벤트 내용도 지난달과 거의 바뀌지 않았다. 
+
+
+
+#### 3) 문제
+
+- 지난달과 비교해서 유저수가 줄어들었다 (사실)
+- 어떤 특정한 유저층에서 문제가 생겼을 것이다. (가설)
+
+
+
+#### 4) 분석 스토리
+
+- 퍼즐컬렉션의 유저수가 지난달보다 줄어들었다. (사실)
+- 어딘가 숫자가 줄어든 세그먼트가 있을 것이다. (가설)
+- 그 세그먼트에 적합한 대책을 세워서 유저수를 지난달과 같은 수준으로 회복한다. (해결책)
+
+- 탐색형 데이터 분석 : 사전에 원인을 짐작하기 어려운 상황에서 출발하여 그 원인을 데이터 분석을 통해 탐색해나가는 방법
+  - 데이터 수집
+    - DAU(Daily Active User) 데이터 – 하루에 한번 이상 게임을 이용한 유저
+    - user_info 데이터 - 유저의 속성정보
+
+
+
+#### 5) 데이터 수집
+
+- 이용시작일 /  string (문자열) /  install_date
+
+- 앱 이름 /  string (문자열)  /  app_name
+
+- 유저 ID  /  int (수치)  /  user_id
+
+- 성별(여성, 남성)  /  string (문자열)  /  gender
+
+- 연령대(10, 20, 30, 40, 50)  /  int (수치)  /  generation
+
+- 단말기 종류(iOS, Android)  /  string (문자열)  /  device_type
+
+
+
+#### 6) 데이터 가공 
+
+: DAU에 user_info 데이터 연관시키기
+
+- 유저 ID  /  int (수치)  /  user_id
+- 앱 이름  /  string (문자열)  /  app_name
+- 로그인한 날짜  /  string (문자열)  /  log_date
+- 이용시작일  /  string (문자열)  /  install_date
+- 성별(여성, 남성)  /  string (문자열)  /  gender
+- 연령대(10, 20, 30, 40, 50)  /  int (수치)  /  generation
+- 단말기 종류(iOS, Android)  /  string (문자열)  /  device_type
+
+
+
+####  7) 데이터 분석 
+
+:  어떤 속성을 가진 유저층이 지난달에 비해 감소하였는지 그 세그먼트(계층)을 찾아내기 위해 크로스집계를 실시
+
+- 크로스 집계 : 2개 변수의 인과관계를 교차해서 집계하는 분석 기법
+
+어떤 속성을 가진 유저층이 지난달에 비해 감소하였는지 그 세그먼트(계층)를 찾아내기 위해 크로스 집계를 실행하고 , 원인으로 생각되는 속성이 발견되면 시각화한다. – 어떤 상태의 데이터와 유저의 속성정보(원인 데이터)를 연관시켜서 특정한 속성(원인)이 어떠한 상태(결과)를 야기하는 것이 아닌진 검토하는 방식으로 분석
+
+세그먼트별로 크로스집계하기(세그먼트 분석
+1. 성별 세그먼트 분석
+2. 연령대 세그먼트 분석
+3. 성별 X 연령대 세그먼트 분석
+4. 단말기별 세그먼트 분석
+5. 세그먼트 분석 결과 시각화
+
+
+
+#### 8) 데이터 분석 결과 시각화하기
+
+
+
+#### 9) 실습
+
+```R
+# 단계1 : 실행환경으로 데이터 로딩
+> dau_data <- read.csv("./data/ws3-dau.csv")
+> userinfo <- read.csv("./data/ws3-user_info.csv")
+
+# 단계2 : DAU 데이터에 user.info 데이터 결합하기
+> dau.user <- merge(dau_data, userinfo, by = c("user_id", "app_name"))
+
+# 단계3 : 월 칼럼 추가
+> dau.user$log_month <- substr(dau.user$log_date, 1, 7)
+
+
+# 단계4 : 세그먼트 분석 (성별로 집계, 연령대별 집계, 성별+연령대 교차 집계, device별 집계)
+# 성별로 집계
+> table(dau.user[, c("log_month", "gender")]) 
+         gender
+log_month     F     M
+  2013-08 47343 46842
+  2013-09 38027 38148
+
+# 연령대별 집계
+> table(dau.user[, c("log_month", "generation")])
+         generation
+log_month    10    20    30    40    50
+  2013-08 18785 33671 28072  8828  4829
+  2013-09 15391 27229 22226  7494  3835
+
+# 성별+연령대 교차 집계
+> library(reshape2)
+> dcast(dau.user, log_month ~ gender + generation, value.var="user_id", length)
+  log_month F_10  F_20  F_30 F_40 F_50 M_10  M_20  M_30 M_40 M_50
+1   2013-08 9091 17181 14217 4597 2257 9694 16490 13855 4231 2572
+2   2013-09 7316 13616 11458 3856 1781 8075 13613 10768 3638 2054
+
+# 디바이스별 집계
+> table(dau.user[, c("log_month", "device_type")])
+         device_type
+log_month Android   iOS
+  2013-08   46974 47211
+  2013-09   29647 46528
+
+# 단계5 : 시각화를 위한 데이터 처리
+# 날짜별로 단말기별 유저수 산출
+> library(plyr)
+> dau.user.device <- ddply(dau.user, .(log_date, device_type), summarise, dau=length(user_id))
+
+# 날짜별 데이터 형식으로 변환하기
+> dau.user.device$log_date <- as.Date(dau.user.device$log_date)
+
+# 단계6 : 시각화
+> library(ggplot2)
+> library(scales)
+> limits <- c(0, max(dau.user.device$dau))
+
+> ggplot(dau.user.device, aes(x=log_date, y=dau, col=device_type, lty=device_type, shape=device_type)) +
+    geom_line(lwd=1) +
+    geom_point(size=4) +
+    scale_y_continuous(label=comma, limits=limits)
+
+> table(unique(dau.user.info[, c("log_month", "gender", "user_id")]))
+```
+
+![1](190926%20R%20Statistics.assets/1.JPG)
+
+
+
+
+
+### 2. 배너광고 반응 비교 검증
+
+```R
+# 1.배너광고의 표시횟수정보 데이터와 클릭횟수정보 데이터를 저장하고 결합
+> imp <- read.csv("./data/ab_test_imp.csv", header=T, stringsAsFactors=F)
+> head(imp)
+    log_date app_name  test_name test_case user_id transaction_id
+1 2013-10-01  game-01 sales_test         B   36703          25622
+2 2013-10-01  game-01 sales_test         A   44339          25623
+3 2013-10-01  game-01 sales_test         B   32087          25624
+4 2013-10-01  game-01 sales_test         B   10160          25625
+5 2013-10-01  game-01 sales_test         B   46113          25626
+6 2013-10-01  game-01 sales_test         A    6605          25627
+
+> goal <- read.csv("./data/ab_test_goal.csv", header=T, stringsAsFactors=F)
+> head(goal)
+    log_date app_name  test_name test_case user_id transaction_id
+1 2013-10-01  game-01 sales_test         B   15021          25638
+2 2013-10-01  game-01 sales_test         B     351          25704
+3 2013-10-01  game-01 sales_test         B    8276          25739
+4 2013-10-01  game-01 sales_test         B    1230          25742
+5 2013-10-01  game-01 sales_test         B   17471          25743
+6 2013-10-01  game-01 sales_test         B   48728          25746
+
+> imp.goal <- merge(imp, goal, by="transaction_id", all.x=T, suffixes=c("", ".g"))
+> # suffixes : 중복되는 컬럼에 대해 .g를 붙이기
+
+
+# 2.클릭여부에 대한 플래그 작성(ifelse함수 활용)
+> imp.goal$click <- ifelse(is.na(imp.goal$user_id.g), 0, 1)
+# user_id.g 값이 NA인 경우 0, 그렇지 않을 경우 1 삽입
+> head(imp.goal)
+  transaction_id   log_date app_name  test_name test_case user_id log_date.g
+1              1 2013-10-02  game-01 sales_test         A   49017       <NA>
+2              2 2013-10-02  game-01 sales_test         B   49018       <NA>
+3              3 2013-10-02  game-01 sales_test         A   44338       <NA>
+4              4 2013-10-02  game-01 sales_test         A   44339       <NA>
+5              5 2013-10-02  game-01 sales_test         A   28598       <NA>
+6              6 2013-10-02  game-01 sales_test         B   30306       <NA>
+  app_name.g test_name.g test_case.g user_id.g click
+1       <NA>        <NA>        <NA>        NA     0
+2       <NA>        <NA>        <NA>        NA     0
+3       <NA>        <NA>        <NA>        NA     0
+4       <NA>        <NA>        <NA>        NA     0
+5       <NA>        <NA>        <NA>        NA     0
+6       <NA>        <NA>        <NA>        NA     0
+
+
+# 3.클릭률 집계하기
+> ddply(imp.goal, .(test_case), summarise, cvr=sum(click)/length(user_id))
+  test_case        cvr
+1         A 0.08025559
+2         B 0.11546015
+
+# 4.카이제곱 검정 (배너광고 종류와 클릭여부 간의)
+> chisq.test(x=imp.goal$test_case, y=imp.goal$click)
+
+	Pearson's Chi-squared test with Yates' continuity correction
+
+data:  imp.goal$test_case and imp.goal$click
+X-squared = 308.38, df = 1, p-value < 2.2e-16
+
+
+# 5. 날짜별, 테스트 케이스별 클릭률 산출
+> imp.goal.summary <- ddply(imp.goal, .(log_date, test_case), summarize, imp=length(user_id), cv=sum(click), cvr=sum(click)/length(user_id))
+> head(imp.goal.summary)  # imp는 전체 유저수, cv는 클릭수, cvr은 유저수 대비 클릭수의 비율
+    log_date test_case  imp  cv        cvr
+1 2013-10-01         A 1358  98 0.07216495
+2 2013-10-01         B 1391 176 0.12652768
+3 2013-10-02         A 1370  88 0.06423358
+4 2013-10-02         B 1333 212 0.15903976
+5 2013-10-03         A 1213 170 0.14014839
+6 2013-10-03         B 1233 185 0.15004055
+
+# 6. 테스트 케이스별 클릭률 산출
+> imp.goal.summary <- ddply(imp.goal.summary, .(test_case), transform, cvr.avg=sum(cv/sum(imp))) # transform으로 test_case기준으로 정렬, cvr.avg칼럼 추가
+> head(imp.goal.summary)
+    log_date test_case  imp  cv        cvr    cvr.avg
+1 2013-10-01         A 1358  98 0.07216495 0.08025559
+2 2013-10-02         A 1370  88 0.06423358 0.08025559
+3 2013-10-03         A 1213 170 0.14014839 0.08025559
+4 2013-10-04         A 1521  89 0.05851414 0.08025559
+5 2013-10-05         A 1587  56 0.03528670 0.08025559
+6 2013-10-06         A 1219 120 0.09844135 0.08025559
+
+# 7. 테스트 케이스별 클릭률 시계열 시각화
+> str(imp.goal.summary)
+'data.frame':	62 obs. of  6 variables:
+ $ log_date : chr  "2013-10-01" "2013-10-02" "2013-10-03" "2013-10-04" ...
+ $ test_case: chr  "A" "A" "A" "A" ...
+ $ imp      : int  1358 1370 1213 1521 1587 1219 1595 1401 1648 1364 ...
+ $ cv       : num  98 88 170 89 56 120 194 99 199 114 ...
+ $ cvr      : num  0.0722 0.0642 0.1401 0.0585 0.0353 ...
+ $ cvr.avg  : num  0.0803 0.0803 0.0803 0.0803 0.0803 ...
+
+# 날짜별 데이터 형식으로 변환
+> imp.goal.summary$log_date <- as.Date(imp.goal.summary$log_date)
+
+# 시각화
+> library(ggplot2)
+> library(scales)
+
+> limits <- c(0, max(imp.goal.summary$cvr))
+
+
+> ggplot(ab.test.imp.summary,aes(x=log_date,y=cvr,
+                                    col=test_case,lty=test_case,shape=test_case))+                   geom_line(lwd=1)+geom_point(size=4)+geom_line(aes(y=cvr.avg,col=test_case))+
+                                    scale_y_continuous(label=percent,limits=limits)
+```
+
+![2](190926%20R%20Statistics.assets/2.JPG)
+
+
+
+
+
+### 3. 매스미디어 광고 실시의 최적화 문제
+
+```R
+# 단계1 : CSV 파일 읽기
+> ad <- read.csv("./data/ad_result.csv")
+> head(ad)
+    month tvcm magazine install
+1 2013-01 6358     5955   53948
+2 2013-02 8176     6069   57300
+3 2013-03 6853     5862   52057
+4 2013-04 5271     5247   44044
+5 2013-05 6473     6365   54063
+6 2013-06 7682     6555   58097
+
+# 단계2 : TV광고의 광고비용과 신규 유저수의 산점도 그리기
+> ggplot(data=ad,
+         aes(x=ad$tvcm, y=ad$install)) +
+    geom_point(shape=19, color="skyblue", size=3) +
+    ggtitle("TV광고비용 대비 신규 가입자")
+```
+
+![4](190926%20R%20Statistics.assets/4.JPG)
+
+```R
+# 단계3 : 잡지광고의 광고비용과 신규 유저수의 산점도 그리기
+> ggplot(data=ad,
+         aes(x=ad$magazine, y=ad$install)) +
+    geom_point(shape=19, color="hotpink", size=3) +
+    ggtitle("잡지광고비용 대비 신규 가입자")
+```
+
+![3](190926%20R%20Statistics.assets/3.JPG)
+
+```R
+# 단계4 : 회귀분석 실행
+> library(stats)
+
+> df <- data.frame(x1, x2, y)
+> result.lm <- lm(formula=y~x1+x2, data=ad)
+> result.lm
+
+Call:
+lm(formula = y ~ x1 + x2, data = ad)
+
+Coefficients:
+(Intercept)           x1           x2  
+    188.174        1.361        7.250  
+
+# 다중공선성 문제 확인
+> vif(result.lm)
+      x1       x2 
+2.478091 2.478091 
+# 문제 없다~
+
+# 단계5 : 회귀분석 해석
+> summary(result.lm)
+
+Call:
+lm(formula = y ~ x1 + x2, data = ad)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1406.87  -984.49   -12.11   432.82  1985.84 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  188.1743  7719.1308   0.024  0.98123   
+x1             1.3609     0.5174   2.630  0.03390 *  # 유의
+x2             7.2498     1.6926   4.283  0.00364 ** # 더 유의
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1387 on 7 degrees of freedom
+Multiple R-squared:  0.9379,	Adjusted R-squared:  0.9202 
+F-statistic: 52.86 on 2 and 7 DF,  p-value: 5.967e-05
+```
+
+
+
+
+
+### 4. 게임 단말기 전화 사례 분석
+
+```R
+######################################################
+# 게임 단말기  피처폰에서 스마트폰으로  이용 분석
+######################################################
+# 단계 1: CSV 파일 읽기
+> dau <- read.csv("./data/ws6-dau.csv", header = T, stringsAsFactors = F)
+> head(dau)
+  region_month region_day app_name  user_id device
+1      2013-01 2013-01-01  game-02 10061580     FP
+2      2013-01 2013-01-01  game-02 10154440     FP
+3      2013-01 2013-01-01  game-02 10164762     SP
+4      2013-01 2013-01-01  game-02 10165615     FP
+5      2013-01 2013-01-01  game-02 10321356     FP
+6      2013-01 2013-01-01  game-02 10406653     SP
+
+
+# 단계 2: 유저별로 ID 이전을 한 유저인지 아닌지 나타내는 데이터 정리
+> mau <- unique (dau[, c("region_month", "device", "user_id")])
+> fp.mau <- unique (dau[dau$device=="FP", c("region_month", "device", "user_id")])
+> sp.mau <- unique (dau[dau$device=="SP", c("region_month", "device", "user_id")])
+
+# 1월과 2월 데이터를 나누기
+> fp.mau1 <- fp.mau[fp.mau$region_month == "2013-01", ]
+> fp.mau2 <- fp.mau[fp.mau$region_month == "2013-02", ]
+> sp.mau1 <- sp.mau[sp.mau$region_month == "2013-01", ]
+> sp.mau2 <- sp.mau[sp.mau$region_month == "2013-02", ]
+
+# 1월에 피쳐폰으로 이용했던 유저가 2월에도 이용했는가
+> mau$is_access <- 1
+> fp.mau1 <- merge(fp.mau1, mau[mau$region_month == "2013-02",
+                                c("user_id", "is_access")], by = "user_id", all.x = T)
+> fp.mau1$is_access[is.na(fp.mau1$is_access)] <- 0
+> head(fp.mau1)
+  user_id region_month device is_access
+1  397286      2013-01     FP         1
+2  471341      2013-01     FP         1
+3  503874      2013-01     FP         0
+4  512250      2013-01     FP         1
+5  513811      2013-01     FP         1
+6  638688      2013-01     FP         1
+
+
+# 1월에 피쳐폰으로 이용했고 2월에도 피쳐폰으로 이용했는가
+> fp.mau2$is_fp <- 1
+> fp.mau1 <- merge(fp.mau1, fp.mau2[, c("user_id", "is_fp")],
+                   by = "user_id",
+                   all.x = T)
+> fp.mau1$is_fp[is.na(fp.mau1$is_fp)] <- 0
+> head(fp.mau1)
+  user_id region_month device is_access is_fp
+1  397286      2013-01     FP         1     1
+2  471341      2013-01     FP         1     0
+3  503874      2013-01     FP         0     0
+4  512250      2013-01     FP         1     1
+5  513811      2013-01     FP         1     1
+6  638688      2013-01     FP         1     1
+
+
+# 1월에는 피쳐폰으로 이용하다가 2월에는 스마트폰으로 이용했는가
+> sp.mau2$is_sp <- 1
+> fp.mau1 <- merge(fp.mau1, sp.mau2[, c("user_id", "is_sp")],
+                   by = "user_id", all.x = T)
+> fp.mau1$is_sp[is.na(fp.mau1$is_sp)] <- 0
+> head(fp.mau1)
+  user_id region_month device is_access is_fp is_sp
+1  397286      2013-01     FP         1     1     0
+2  471341      2013-01     FP         1     0     1
+3  503874      2013-01     FP         0     0     0
+4  512250      2013-01     FP         1     1     0
+5  513811      2013-01     FP         1     1     0
+6  638688      2013-01     FP         1     1     0
+
+
+# 1월에는 피쳐폰으로 이용했는데 2월에는 이용하지 않았거나 혹은 스마트폰으로 이용한 유저
+> fp.mau1 <- fp.mau1[fp.mau1$is_access == 0 | fp.mau1$is_sp == 1, ]
+> head(fp.mau1)
+   user_id region_month device is_access is_fp is_sp
+2   471341      2013-01     FP         1     0     1
+3   503874      2013-01     FP         0     0     0
+11 1073544      2013-01     FP         0     0     0
+12 1073864      2013-01     FP         0     0     0
+14 1163733      2013-01     FP         1     0     1
+15 1454629      2013-01     FP         0     0     0
+
+
+
+# 단계 3: 날짜별 게임 이용 상황 데이터 정리
+> library(reshape2)
+> fp.dau1 <- dau[dau$device == "FP" & dau$region_month == "2013-01", ]
+> fp.dau1$is_access <- 1
+> fp.dau1.cast <- dcast(fp.dau1, user_id ~ region_day, value.var =
+                          "is_access", function(x) as.character(length(x)))
+> names(fp.dau1.cast)[-1] <- paste0("X", 1:31, "day")
+> head(fp.dau1.cast)
+  user_id X1day X2day X3day X4day X5day X6day X7day X8day X9day X10day X11day
+1  397286     1     1     1     1     1     1     1     1     1      1      1
+2  471341     1     1     1     1     0     0     0     0     0      0      0
+3  503874     1     0     0     0     0     0     0     0     0      0      0
+4  512250     1     1     1     1     1     1     1     1     1      1      1
+5  513811     0     0     0     0     0     0     0     0     0      0      0
+6  638688     1     1     1     1     1     1     1     1     1      1      1
+  X12day X13day X14day X15day X16day X17day X18day X19day X20day X21day X22day
+1      1      2      1      1      1      2      1      1      1      1      1
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      1      1      1      1      1      1      1      1      1      1      1
+5      0      0      0      0      0      0      0      0      0      0      1
+6      1      1      1      1      1      1      1      1      1      1      1
+  X23day X24day X25day X26day X27day X28day X29day X30day X31day
+1      1      1      1      1      1      1      1      1      1
+2      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0
+4      1      1      1      1      1      1      1      1      1
+5      0      0      0      0      0      1      1      0      1
+6      1      1      1      1      1      1      1      1      1
+
+# 2월에 스마트폰으로 이용한 유저 데이터를 결합하기
+> fp.dau1.cast <- merge(fp.dau1.cast, fp.mau1[, c("user_id", "is_sp")],
+                        by = "user_id")
+> head(fp.dau1.cast)
+  user_id X1day X2day X3day X4day X5day X6day X7day X8day X9day X10day X11day
+1  471341     1     1     1     1     0     0     0     0     0      0      0
+2  503874     1     0     0     0     0     0     0     0     0      0      0
+3 1073544     0     0     0     0     0     0     0     0     0      1      0
+4 1073864     0     0     0     0     0     0     0     0     0      0      1
+5 1163733     1     1     0     0     0     0     0     0     0      0      0
+6 1454629     0     0     0     0     0     0     0     0     0      0      0
+  X12day X13day X14day X15day X16day X17day X18day X19day X20day X21day X22day
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      1      0      0      0      0      0      0      0      0
+5      0      0      0      0      0      1      1      0      0      1      1
+6      0      1      0      0      0      0      0      0      0      0      0
+  X23day X24day X25day X26day X27day X28day X29day X30day X31day is_sp.x is_sp.y
+1      0      0      0      0      0      0      0      0      0       1       1
+2      0      0      0      0      0      0      0      0      0       0       0
+3      1      1      1      0      0      0      0      0      0       0       0
+4      0      0      0      0      0      0      0      0      0       0       0
+5      1      1      1      1      1      1      0      0      0       1       1
+6      0      0      0      0      0      0      0      0      0       0       0
+> table(fp.dau1.cast$is_sp.y)
+
+  0   1 
+190 102 
+
+
+# 단계 4: 로지스틱 회귀분석을 통한 모델 작성
+> fit.logit <- step(glm(is_sp.y ~ ., data = fp.dau1.cast[, -1],
+> family = binomial))
+> summary(fit.logit)
+
+Call:
+glm(formula = is_sp.y ~ is_sp.x, family = binomial, data = fp.dau1.cast[, 
+    -1])
+
+Deviance Residuals: 
+       Min          1Q      Median          3Q  
+-2.409e-06  -2.409e-06  -2.409e-06   2.409e-06  
+       Max  
+ 2.409e-06  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)   -26.57   25835.95  -0.001    0.999
+is_sp.x        53.13   43713.46   0.001    0.999
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 3.7786e+02  on 291  degrees of freedom
+Residual deviance: 1.6941e-09  on 290  degrees of freedom
+AIC: 4
+
+Number of Fisher Scoring iterations: 25
+
+
+# 단계 5: 작성된 모델을 이용해서 예측하기
+# SP(스마트폰) 이전 확률
+> fp.dau1.cast$prob <- round(fitted(fit.logit), 2)
+# SP(스마트폰)으로 이전할 지 예측
+> fp.dau1.cast$pred <- ifelse(fp.dau1.cast$prob > 0.5, 1, 0)
+> head(fp.dau1.cast)
+  user_id X1day X2day X3day X4day X5day X6day X7day X8day X9day
+1  471341     1     1     1     1     0     0     0     0     0
+2  503874     1     0     0     0     0     0     0     0     0
+3 1073544     0     0     0     0     0     0     0     0     0
+4 1073864     0     0     0     0     0     0     0     0     0
+5 1163733     1     1     0     0     0     0     0     0     0
+6 1454629     0     0     0     0     0     0     0     0     0
+  X10day X11day X12day X13day X14day X15day X16day X17day X18day
+1      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0
+3      1      0      0      0      0      0      0      0      0
+4      0      1      0      0      1      0      0      0      0
+5      0      0      0      0      0      0      0      1      1
+6      0      0      0      1      0      0      0      0      0
+  X19day X20day X21day X22day X23day X24day X25day X26day X27day
+1      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      1      1      1      0      0
+4      0      0      0      0      0      0      0      0      0
+5      0      0      1      1      1      1      1      1      1
+6      0      0      0      0      0      0      0      0      0
+  X28day X29day X30day X31day is_sp.x is_sp.y prob pred
+1      0      0      0      0       1       1    1    1
+2      0      0      0      0       0       0    0    0
+3      0      0      0      0       0       0    0    0
+4      0      0      0      0       0       0    0    0
+5      1      0      0      0       1       1    1    1
+6      0      0      0      0       0       0    0    0
+
+
+
+# 단계 6: 예측결과로부터 유저 군 추측하기
+# 예측과 실제
+table(fp.dau1.cast[, c("is_sp", "pred")])
+
+# 예측결과로부터 유저군을 추측하기
+fp.dau1.cast1 <- fp.dau1.cast[fp.dau1.cast$is_sp == 1 & fp.dau1.cast$pred
+== 1, ]
+head(fp.dau1.cast1[order(fp.dau1.cast1$prob, decreasing = T), ])
+
+fp.dau1.cast2 <- fp.dau1.cast[fp.dau1.cast$is_sp == 0 & fp.dau1.cast$pred
+== 1, ]
+head(fp.dau1.cast2[order(fp.dau1.cast2$prob, decreasing = T), ])
+
+fp.dau1.cast3 <- fp.dau1.cast[fp.dau1.cast$is_sp == 0 & fp.dau1.cast$pred
+== 0, ]
+head(fp.dau1.cast3[order(fp.dau1.cast3$prob), ])
+```
+
