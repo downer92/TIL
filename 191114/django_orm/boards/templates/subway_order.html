@@ -1,0 +1,39 @@
+<form action="/board/reciept/" method="POST">
+    {% csrf_token %}
+    <!-- hidden 값으로 token 전달 -->
+    <h3>주문해주세요.</h3>
+    <label type="uname">Name</label>
+    <input type="text" name="name" id="uname" placeholder="성함을 입력하세요."> <br>
+    <label type="date">Date</label>
+    <input type="text" name="date" id="date" placeholder='YYYY-mm-dd'> <br>
+<hr>
+    <h3>1. 샌드위치 선택</h3>
+    {%for m in menu%}
+    <input type="radio" name="menu" id="{{m}}" value="{{m}}">
+    <label type="{{m}}">{{m}}</label><br>
+    {%endfor%}
+<hr>
+    <h3>2. 사이즈 선택</h3>
+    <input list="sizes" name="size">
+    <datalist id="sizes">
+    {%for s in size%}
+        <option value="{{s}}">
+    {%endfor%}
+    </datalist>
+<hr>
+    <h3>3. 빵 선택</h3>
+    <input list="breads" name="bread">
+    <datalist id="breads">
+    {%for b in bread%}
+        <option value="{{b}}">
+    {%endfor%}
+    </datalist>
+<hr>
+    <h3>4. 야채|소스 선택</h3>
+    {%for a in add%}
+    <input type="checkbox" name="add" id="{{a}}" value="{{a}}">
+    <label type="{{a}}">{{a}}</label><br>
+    {%endfor%}
+
+    <input type="submit" value="order">
+</form>
