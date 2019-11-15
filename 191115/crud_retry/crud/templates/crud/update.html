@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<h1> 데이터 수정 </h1>
+<form action='/crud/{{article.pk}}/revise/' method='POST'>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="exampleInputEmail1">Title</label>
+        <input type="text" name="title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="{{article.title}}">
+        <small id="emailHelp" class="form-text text-muted">타이틀</small>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Content</label>
+        <input type="text" name="content" class="form-control" id="exampleInputPassword1" placeholder="{{article.content}}">
+      </div>
+    <button type="submit" class="btn btn-primary">수정하기</button>
+</form>
+
+{% endblock %}

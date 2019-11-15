@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<ul class="list-group"> 
+    {% for art in articles %} 
+    <li class="list-group-item"> {{ art.id }}. <a href="/crud/{{ art.pk }}/detail/">{{ art.title }}</a> </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
