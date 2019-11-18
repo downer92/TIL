@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+    주문자명 : {{order.name}} <br>
+    주소 : {{order.address}} <br>
+    전화번호 : {{order.phone}} <br>
+    주문메뉴 : {{order.menu}} <br>
+    빵 : {{order.bread}} <br>
+    야채 : {{order.vegetable}} <br>
+    소스 : {{order.sacue}} <br>
+    음료 : {{order.drink}} <br>
+    주문일자 : {{order.created_at}} <br>
+    주문정보 수정일자 : {{order.updated_at}} <br>
+    <a href="{% url 'subway:update' order.id %}"> 수정하기 </a>
+    <form action="{% url 'subway:delete' order.id %}" method='POST'>
+        {% csrf_token %}
+        <input type='submit' value="삭제하기">
+    </form>
+{% endblock %}

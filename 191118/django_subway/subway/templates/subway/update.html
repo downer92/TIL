@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<form action="{% url 'subway:update' order.id %}" method="POST">
+    {% csrf_token %}
+    <!-- hidden 값으로 token 전달 -->
+    <h3>주문 정보를 수정해주세요.</h3>
+    주문자명 : {{order.name}} <br>
+    주소 : {{order.address}} <br>
+    전화번호 : {{order.phone}} <br>
+<hr>
+    <h3>1. 메뉴 선택</h3>
+    {%for m in menu%}
+    <input type="radio" name="menu" id="{{m}}" value="{{m}}">
+    <label type="{{m}}">{{m}}</label><br>
+    {%endfor%}
+
+<hr>
+    <h3>2. 빵 선택</h3>
+    <input list="breads" name="bread">
+    <datalist id="breads">
+    {%for b in bread%}
+        <option value="{{b}}">
+    {%endfor%}
+    </datalist>
+
+<hr>
+    <h3>3. 야채 선택</h3>
+    {%for v in vegetable%}
+    <input type="checkbox" name="vegetable" id="{{v}}" value="{{v}}">
+    <label type="{{v}}">{{v}}</label><br>
+    {%endfor%}
+
+<hr>
+    <h3>4. 소스 선택</h3>
+    {%for s in sauce%}
+    <input type="checkbox" name="sauce" id="{{s}}" value="{{s}}">
+    <label type="{{s}}">{{s}}</label><br>
+    {%endfor%}
+
+<hr>
+    <h3>5. 음료 선택</h3>
+    <input list="drink" name="drink">
+    <datalist id="drink">
+    {%for d in drink%}
+        <option value="{{d}}">
+    {%endfor%}
+    </datalist>
+    
+    <input type="submit" value="update">
+</form>
+
+{% endblock %}

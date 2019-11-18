@@ -1,0 +1,17 @@
+{%extends 'base.html'%}
+{%block title%}
+New
+{%endblock%}
+
+{%block body%}
+<!-- 작성할 폼 -->
+<form action="{% url 'crud:new' %}" method='POST'>
+    {%csrf_token%}
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title"> <br>
+    <label for="content">Contents</label>
+    <textarea name="content" cols="30" rows="5" id="content"></textarea>
+    <!-- 30글자 5줄 -->
+    <input type='submit'>
+</form>
+{%endblock%}

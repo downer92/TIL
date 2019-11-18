@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block body %}
+    <ul>
+        {% for order in orders %} <!--넘길 값은 띄어쓰기 하고 써주면 됨. 만약에 2개를 넘긴다면 한 칸 더 띄우고 추가 -->
+        <li> <a href="{% url 'subway:detail' order.id %}">{{order}} </a></li>
+        {% endfor %}
+    </ul>
+    
+{% endblock %}
