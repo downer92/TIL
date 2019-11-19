@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body %}
+{% csrf_token %}
+<h3> {{question.question}} </h3>
+<form action="{% url 'board:delete' question.id %}" method='POST'>
+        {% csrf_token %}
+    <input type='submit' value='삭제하기'>
+</form>
+<br>
+
+<ul>
+{% for choice in choices %}
+<li>{{choice.survey}} &nbsp; [{{choice.votes}}]
+<form action="{% url 'board:vote' choice.id %}" method='POST'>
+    {% csrf_token %}
+    <a href="#" onclick="this.parentNode.submit()">투표하기</a>
+    <a href="{% url 'board:update' choice.id %}">수정하기</a>
+</form>
+</li>
+{% endfor %}
+
+</ul>
+<br>
+
+<form action="{% url 'board:snew' question.id %}" method='POST'>
+    {% csrf_token %}
+    <input type="text" name="survey" id="survey">
+    <input type='submit' value='항목 추가'>
+</form>
+
+{% endblock %}

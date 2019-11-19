@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<form action="{% url 'board:update' choice.id %}" method='POST'>
+    {% csrf_token %}
+    <input type="text" name="survey" id="survey" value="{{choice.survey}}">
+    <input type='submit' value='수정하기'>
+</form>
+<br>
+
+<form action="{% url 'board:sdelete' choice.id %}" method='POST'>
+    {% csrf_token %}
+    <input type='submit' value='삭제하기'>
+</form>
+
+{% endblock %}

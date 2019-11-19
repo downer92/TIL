@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block body %}
+
+{% csrf_token %}
+
+<h3> 질문 LIST </h3>
+<ul>
+{% for q in questions %}
+<li> <a href="{% url 'board:detail' q.id %}"> {{q.question}} </a> </li>
+{% endfor %}
+</ul>
+
+
+{% endblock %}
